@@ -1,0 +1,15 @@
+.section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1280px;
+  margin: 3rem auto 3rem;
+}
+
+.sectionTitle {
+  margin: 0 auto 1rem 24px;
+  font-size: 1.7rem;
+  text-align: left;
+}
