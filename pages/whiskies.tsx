@@ -3,10 +3,7 @@ import Layout from '../components/Layout';
 import Section from '../components/Section';
 import Cards from '../components/Cards';
 import Card from '../components/Card';
-import {
-  getWhiskyList,
-  Whisky,
-} from '../utils/baseUtils';
+import { getWhiskyList, Whisky } from '../utils/baseUtils';
 
 export default function Whiskies() {
   const whiskyList: Whisky[] = getWhiskyList();
@@ -14,10 +11,7 @@ export default function Whiskies() {
     <>
       <Section>
         <Cards>
-          {whiskyList.map((whisky) => {
-            const { id, name, brand } = whisky;
-            return <Card key={id} link="" title={brand} subtitle={name} />;
-          })}
+          {whiskyList.map((w) => <Card key={w.id} whisky={w} />)}
         </Cards>
       </Section>
     </>
