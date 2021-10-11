@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Whisky } from '../utils/baseUtils';
+import { WhiskyItem } from '../utils/baseUtils';
 import styles from './card.module.css';
 
 function Stars(props: { rating: number }) {
@@ -31,14 +31,17 @@ function Stars(props: { rating: number }) {
   );
 }
 
-function WhiskyCard(props: { whisky: Whisky }) {
+function WhiskyCard(props: { whisky: WhiskyItem }) {
   const { id, brand, name, rating } = props.whisky;
-  // const imgSrc =
-  //   `https://firebasestorage.googleapis.com/v0/b/whiskey-b6e58.appspot.com/o/whiskies%2Fwhisky_${id}.jpg?alt=media`;
-
   return (
-    <a href={`/${id}`}>
-      <Image className={styles.cardImg} src={`/images/whiskies/${id}.jpg`} alt={`${brand} - ${name}`} width="400" height="400" />
+    <a href={`/whiskies/${id}`}>
+      <Image
+        className={styles.cardImg}
+        src={`/images/whiskies/${id}.jpg`}
+        alt={`${brand} - ${name}`}
+        width="400"
+        height="400"
+      />
       <h3 className={styles.cardTitle}>{brand}</h3>
       <p className={styles.cardSubtitle}>{name}</p>
       <Stars rating={rating} />
@@ -51,7 +54,7 @@ function UserCard(props: { user: string }) {
 }
 
 type CardProps = {
-  whisky?: Whisky;
+  whisky?: WhiskyItem;
   user?: string;
 };
 

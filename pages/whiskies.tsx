@@ -3,10 +3,10 @@ import Layout from '../components/Layout';
 import Section from '../components/Section';
 import Cards from '../components/Cards';
 import Card from '../components/Card';
-import { getWhiskyList, Whisky } from '../utils/baseUtils';
+import { getWhiskyList, WhiskyItem } from '../utils/baseUtils';
 
 export default function Whiskies() {
-  const whiskyList: Whisky[] = getWhiskyList();
+  const whiskyList: WhiskyItem[] = getWhiskyList();
   return (
     <>
       <Section>

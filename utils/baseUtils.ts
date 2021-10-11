@@ -11,7 +11,7 @@ type Ratings = {
 
 type WhiskyType = 'Bourbon' | 'Irish' | 'Rye' | 'Scotch' | 'Whisky';
 
-export type Whisky = {
+export type WhiskyItem = {
   age: number;
   id: string;
   brand: string;
@@ -26,7 +26,7 @@ export type Whisky = {
 };
 
 export type WhiskyMap = {
-  [whiskyId: string]: Whisky;
+  [whiskyId: string]: WhiskyItem;
 };
 
 type Dir = 'asc' | 'desc';
@@ -45,9 +45,9 @@ export function getWhiskyMap(): WhiskyMap {
   return whiskyMap;
 }
 
-export function getWhiskyList(): Whisky[] {
+export function getWhiskyList(): WhiskyItem[] {
   // @ts-ignore
-  const whiskyList: Whisky[] = Object.values(_whiskies);
+  const whiskyList: WhiskyItem[] = Object.values(_whiskies);
   return whiskyList;
 }
 
@@ -55,8 +55,8 @@ export function getUserName(id: string, users: UserMap): string {
   return users[id];
 }
 
-export function getWhiskiesSortedByKey(key: NumericKey, dir: Dir, whiskies: Whisky[]): Whisky[] {
-  const sorted: Whisky[] = [...whiskies].sort((a, b) => {
+export function getWhiskiesSortedByKey(key: NumericKey, dir: Dir, whiskies: WhiskyItem[]): WhiskyItem[] {
+  const sorted: WhiskyItem[] = [...whiskies].sort((a, b) => {
     if (dir === 'asc') {
       if (a[key] < b[key]) return -1;
       if (a[key] > b[key]) return 1;
@@ -70,8 +70,8 @@ export function getWhiskiesSortedByKey(key: NumericKey, dir: Dir, whiskies: Whis
   return sorted;
 }
 
-export function getWhiskiesFilteredByKeys(types: WhiskyType[], whiskies: Whisky[]): Whisky[] {
-  const filtered: Whisky[] = [];
+export function getWhiskiesFilteredByKeys(types: WhiskyType[], whiskies: WhiskyItem[]): WhiskyItem[] {
+  const filtered: WhiskyItem[] = [];
   for (const whisky of whiskies) {
     if (types.includes(whisky.type)) {
       filtered.push(whisky);
@@ -80,14 +80,18 @@ export function getWhiskiesFilteredByKeys(types: WhiskyType[], whiskies: Whisky[
   return filtered;
 }
 
-export function getTopWhiskiesByType(type: WhiskyType, limit: number, whiskies: Whisky[]): Whisky[] {
+export function getTopWhiskiesByType(
+  type: WhiskyType,
+  limit: number,
+  whiskies: WhiskyItem[],
+): WhiskyItem[] {
   const filtered = getWhiskiesFilteredByKeys([type], whiskies);
   const sorted = getWhiskiesSortedByKey('rating', 'desc', filtered);
   return sorted.slice(0, limit);
 }
 
-export function getUserWhiskies(id: string, whiskies: Whisky[]): Whisky[] {
-  const userWhiskies: Whisky[] = [];
+export function getUserWhiskies(id: string, whiskies: WhiskyItem[]): WhiskyItem[] {
+  const userWhiskies: WhiskyItem[] = [];
 
   for (const whisky of whiskies) {
     for (const [user, score] of Object.entries(whisky.ratings)) {
