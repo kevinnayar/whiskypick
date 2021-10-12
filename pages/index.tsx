@@ -1,52 +1,66 @@
-import type { NextPage } from 'next';
+import type { NextPage, GetStaticProps } from 'next';
 import Layout from '../components/Layout';
 import Section from '../components/Section';
 import Cards from '../components/Cards';
 import Card from '../components/Card';
 import { getWhiskyList, getTopWhiskiesByType, WhiskyItem } from '../utils/baseUtils';
 
-export default function Index() {
+type Props = {
+  bourbons: WhiskyItem[],
+  irish: WhiskyItem[],
+  ryes: WhiskyItem[],
+  scotches: WhiskyItem[],
+  singleMalts: WhiskyItem[],
+};
+
+export const getStaticProps: GetStaticProps = () => {
   const whiskyList: WhiskyItem[] = getWhiskyList();
 
-  const topBourbons = getTopWhiskiesByType('Bourbon', 6, whiskyList);
-  const topIrish = getTopWhiskiesByType('Irish', 6, whiskyList);
-  const topRyes = getTopWhiskiesByType('Rye', 6, whiskyList);
-  const topScotches = getTopWhiskiesByType('Scotch', 6, whiskyList);
-  const topSingleMalts = getTopWhiskiesByType('Whisky', 6, whiskyList);
+  const props: Props = {
+    bourbons: getTopWhiskiesByType('Bourbon', 6, whiskyList),
+    irish: getTopWhiskiesByType('Irish', 6, whiskyList),
+    ryes: getTopWhiskiesByType('Rye', 6, whiskyList),
+    scotches: getTopWhiskiesByType('Scotch', 6, whiskyList),
+    singleMalts: getTopWhiskiesByType('Whisky', 6, whiskyList),
+  };
 
+  return { props };
+};
+
+export default function Index({ bourbons, irish, ryes, scotches, singleMalts }: Props) {
   return (
     <>
       <Section title="Top Bourbons">
         <Cards>
-          {topBourbons.map((w) => (
+          {bourbons.map((w) => (
             <Card key={w.id} whisky={w} />
           ))}
         </Cards>
       </Section>
       <Section title="Top Irish">
         <Cards>
-          {topIrish.map((w) => (
+          {irish.map((w) => (
             <Card key={w.id} whisky={w} />
           ))}
         </Cards>
       </Section>
       <Section title="Top Ryes">
         <Cards>
-          {topRyes.map((w) => (
+          {ryes.map((w) => (
             <Card key={w.id} whisky={w} />
           ))}
         </Cards>
       </Section>
       <Section title="Top Scotches">
         <Cards>
-          {topScotches.map((w) => (
+          {scotches.map((w) => (
             <Card key={w.id} whisky={w} />
           ))}
         </Cards>
       </Section>
       <Section title="Top Other Single Malts">
         <Cards>
-          {topSingleMalts.map((w) => (
+          {singleMalts.map((w) => (
             <Card key={w.id} whisky={w} />
           ))}
         </Cards>

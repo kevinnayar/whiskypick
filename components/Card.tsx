@@ -2,11 +2,11 @@ import Image from 'next/image';
 import { WhiskyItem } from '../utils/baseUtils';
 import styles from './card.module.css';
 
-function Stars(props: { rating: number }) {
+function Stars(props: { rating: number; fullWidth?: boolean }) {
   const five = ['a', 'b', 'c', 'd', 'e'];
 
-  const bgWidth = 160;
-  const fgWidth = props.rating / 5 * bgWidth;
+  const bgWidth = props.fullWidth ? 240 : 160;
+  const fgWidth = (props.rating / 5) * bgWidth;
 
   return (
     <div className={styles.cardStars}>
@@ -31,7 +31,7 @@ function Stars(props: { rating: number }) {
   );
 }
 
-function WhiskyCard(props: { whisky: WhiskyItem }) {
+function WhiskyCard(props: { whisky: WhiskyItem, fullWidth?: boolean }) {
   const { id, brand, name, rating } = props.whisky;
   return (
     <a href={`/whiskies/${id}`}>
@@ -42,9 +42,18 @@ function WhiskyCard(props: { whisky: WhiskyItem }) {
         width="400"
         height="400"
       />
-      <h3 className={styles.cardTitle}>{brand}</h3>
-      <p className={styles.cardSubtitle}>{name}</p>
-      <Stars rating={rating} />
+      <div className={styles.cardContent}>
+        <h3 className={styles.cardTitle}>{brand}</h3>
+        <p className={styles.cardSubtitle}>{name}</p>
+        <Stars rating={rating} fullWidth={props.fullWidth} />
+        {props.fullWidth && (
+          <div className={styles.cardMeta}>
+            <p>Type: {props.whisky.type}</p>
+            <p>Age: {props.whisky.age}</p>
+            <p>Price: {props.whisky.price}</p>
+          </div>
+        )}
+      </div>
     </a>
   );
 }
@@ -56,12 +65,13 @@ function UserCard(props: { user: string }) {
 type CardProps = {
   whisky?: WhiskyItem;
   user?: string;
+  fullWidth?: boolean;
 };
 
-export default function Card({ whisky, user }: CardProps) {
+export default function Card({ whisky, user, fullWidth }: CardProps) {
   return (
-    <div className={styles.card}>
-      {whisky && <WhiskyCard whisky={whisky} />}
+    <div className={`${styles.card} ${fullWidth ? styles.cardLinkFullWidth : ''}`}>
+      {whisky && <WhiskyCard whisky={whisky} fullWidth={fullWidth} />}
       {user && <UserCard user={user} />}
     </div>
   );
