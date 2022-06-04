@@ -3,27 +3,27 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Layout from '../components/Layout';
 import Card from '../components/Card';
-import { getWhiskyList } from '../utils/baseUtils';
-import { WhiskyItem } from '../types/baseTypes';
+import { getUserList } from '../utils/baseUtils';
+import { User } from '../types/baseTypes';
 
 export const getStaticProps: GetStaticProps = () => {
   return {
     props: {
-      whiskies: getWhiskyList(),
+      users: getUserList(),
     },
   };
 };
 
-export default function Whiskies({ whiskies }: { whiskies: WhiskyItem[] }) {
+export default function Users({ users }: { users: User[] }) {
   return (
     <Container maxWidth="xl">
       <Grid container spacing={8}>
-        {whiskies.map((w) => <Card key={w.id} type="whisky" item={w} />)}
+        {users.map((u) => <Card key={u.id} type="user" item={u} />)}
       </Grid>
     </Container>
   );
 }
 
-Whiskies.getLayout = function getLayout(page: NextPage) {
-  return <Layout pageTitle="whiskies">{page}</Layout>;
+Users.getLayout = function getLayout(page: NextPage) {
+  return <Layout pageTitle="users">{page}</Layout>;
 };

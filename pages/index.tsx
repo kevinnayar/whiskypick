@@ -1,9 +1,25 @@
 import type { NextPage, GetStaticProps } from 'next';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import Layout from '../components/Layout';
-import Section from '../components/Section';
-import Cards from '../components/Cards';
 import Card from '../components/Card';
-import { getWhiskyList, getTopWhiskiesByType, WhiskyItem } from '../utils/baseUtils';
+import { getWhiskyList, getTopWhiskiesByType } from '../utils/baseUtils';
+import { WhiskyItem } from '../types/baseTypes';
+
+const Section = ({ title, whiskies }: { title: string, whiskies: WhiskyItem[] }) => {
+  return (
+    <Box sx={{ marginBottom: '3rem' }}>
+      <Typography variant="h2">
+        {title}
+      </Typography>
+      <Grid container spacing={8}>
+        {whiskies.map((w) => <Card key={w.id} type="whisky" item={w} />)}
+      </Grid>
+    </Box>
+  );
+}
 
 type Props = {
   bourbons: WhiskyItem[],
@@ -15,13 +31,14 @@ type Props = {
 
 export const getStaticProps: GetStaticProps = () => {
   const whiskyList: WhiskyItem[] = getWhiskyList();
+  const limit = 4;
 
   const props: Props = {
-    bourbons: getTopWhiskiesByType('Bourbon', 6, whiskyList),
-    irish: getTopWhiskiesByType('Irish', 6, whiskyList),
-    ryes: getTopWhiskiesByType('Rye', 6, whiskyList),
-    scotches: getTopWhiskiesByType('Scotch', 6, whiskyList),
-    singleMalts: getTopWhiskiesByType('Whisky', 6, whiskyList),
+    bourbons: getTopWhiskiesByType('Bourbon', limit, whiskyList),
+    irish: getTopWhiskiesByType('Irish', limit, whiskyList),
+    ryes: getTopWhiskiesByType('Rye', limit, whiskyList),
+    scotches: getTopWhiskiesByType('Scotch', limit, whiskyList),
+    singleMalts: getTopWhiskiesByType('Whisky', limit, whiskyList),
   };
 
   return { props };
@@ -29,43 +46,13 @@ export const getStaticProps: GetStaticProps = () => {
 
 export default function Index({ bourbons, irish, ryes, scotches, singleMalts }: Props) {
   return (
-    <>
-      <Section title="Top Bourbons">
-        <Cards>
-          {bourbons.map((w) => (
-            <Card key={w.id} whisky={w} />
-          ))}
-        </Cards>
-      </Section>
-      <Section title="Top Irish">
-        <Cards>
-          {irish.map((w) => (
-            <Card key={w.id} whisky={w} />
-          ))}
-        </Cards>
-      </Section>
-      <Section title="Top Ryes">
-        <Cards>
-          {ryes.map((w) => (
-            <Card key={w.id} whisky={w} />
-          ))}
-        </Cards>
-      </Section>
-      <Section title="Top Scotches">
-        <Cards>
-          {scotches.map((w) => (
-            <Card key={w.id} whisky={w} />
-          ))}
-        </Cards>
-      </Section>
-      <Section title="Top Other Single Malts">
-        <Cards>
-          {singleMalts.map((w) => (
-            <Card key={w.id} whisky={w} />
-          ))}
-        </Cards>
-      </Section>
-    </>
+    <Container maxWidth="xl">
+      <Section title="Top Bourbons" whiskies={bourbons} />
+      <Section title="Top Irish" whiskies={irish} />
+      <Section title="Top Ryes" whiskies={ryes} />
+      <Section title="Top Scotches" whiskies={scotches} />
+      <Section title="Top Single Malts" whiskies={singleMalts} />
+    </Container>
   );
 }
 

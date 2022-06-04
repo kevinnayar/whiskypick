@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Header from './Header';
-import styles from './layout.module.css';
+import Box from '@mui/material/Box';
 
 type Props = {
   children: any;
@@ -16,7 +16,7 @@ export default function Layout({ children, pageTitle }: Props) {
   return (
     <>
       <Head>
-        <title>{title && pageTitle ? ` - ${pageTitle}` : ''}</title>
+        <title>{pageTitle ? `${title} - ${pageTitle}` : title}</title>
         <meta name="description" content={description} />
 
         <meta property="og:type" content="article" />
@@ -39,10 +39,12 @@ export default function Layout({ children, pageTitle }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <Box>
         <Header />
-        <section className={styles.mainContent}>{children}</section>
-      </main>
+        <Box sx={{ marginTop: '10rem' }}>
+          {children}
+        </Box>
+      </Box>
     </>
   );
 }

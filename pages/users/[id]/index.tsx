@@ -3,38 +3,38 @@ import Layout from '../../../components/Layout';
 import Section from '../../../components/Section';
 import NotFound from '../../../components/NotFound';
 import Card from '../../../components/Card';
-import { getWhiskyMap } from '../../../utils/baseUtils';
-import { WhiskyItem } from '../../../types/baseTypes';
+import { getUserMap } from '../../../utils/baseUtils';
+import { User } from '../../../types/baseTypes';
 
 type Props = {
-  whisky: null | WhiskyItem;
+  user: null | User;
 };
 
-const whiskyMap = getWhiskyMap();
+const userMap = getUserMap();
 
 export const getStaticProps: GetStaticProps = ({ params }) => {
   if (!params || !params.id) {
     return {
       props: {
-        whisky: null,
+        user: null,
       },
     };
   }
 
   const id = Array.isArray(params.id) ? '' : params.id;
-  const whisky = whiskyMap[id] || null;
+  const user = userMap[id] || null;
 
   return {
     props: {
-      whisky,
+      user,
     },
   };
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
-  const whiskyIds = Object.keys(whiskyMap);
+  const userIds = Object.keys(userMap);
   return {
-    paths: whiskyIds.map(id => {
+    paths: userIds.map(id => {
       return {
         params: { id },
       };
@@ -43,17 +43,17 @@ export const getStaticPaths: GetStaticPaths = () => {
   };
 }
 
-export default function WhiskyPage({ whisky }: Props) {
+export default function UserPage({ user }: Props) {
   return (
     <>
       <Section>
-        {whisky ? <Card type="whisky" item={whisky} noLink /> : <NotFound />}
+        {user ? <Card type="user" item={user} noLink /> : <NotFound />}
       </Section>
     </>
   );
 }
 
-WhiskyPage.getLayout = function getLayout(page: NextPage) {
-  return <Layout pageTitle="whiskies">{page}</Layout>;
+UserPage.getLayout = function getLayout(page: NextPage) {
+  return <Layout pageTitle="users">{page}</Layout>;
 };
 

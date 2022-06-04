@@ -1,78 +1,119 @@
 import Image from 'next/image';
-import { WhiskyItem } from '../utils/baseUtils';
-import styles from './card.module.css';
+import Link from 'next/link';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { WhiskyItem, User } from '../types/baseTypes';
 
-function Stars(props: { rating: number; fullWidth?: boolean }) {
-  const five = ['a', 'b', 'c', 'd', 'e'];
-
-  const bgWidth = props.fullWidth ? 240 : 160;
-  const fgWidth = (props.rating / 5) * bgWidth;
+const CardStars = ({ rating }: { rating: number }) => {
+  const five = [0, 1, 2, 3, 4];
+  const bgWidth = 160;
+  const fgWidth = (rating / 5) * bgWidth;
 
   return (
-    <div className={styles.cardStars}>
-      <div className={styles.cardStarsBg} style={{ width: `${bgWidth}px` }}>
+    <div className="card-stars">
+      <div className="card-stars__bg" style={{ width: `${bgWidth}px` }}>
         {five.map((l) => (
-          <i key={l} className={`material-icons ${styles.cardStarIcon}`}>
+          <i key={l} className={`material-icons card-stars__icon`}>
             star
           </i>
         ))}
       </div>
-      <div className={styles.cardStarsFg} style={{ width: `${fgWidth}px` }}>
+      <div className="card-stars__fg" style={{ width: `${fgWidth}px` }}>
         {five.map((l) => (
-          <i key={l} className={`material-icons ${styles.cardStarIcon}`}>
+          <i key={l} className={`material-icons card-stars__icon`}>
             star
           </i>
         ))}
       </div>
-      <p className={styles.cardStarsText}>
-        <span>{props.rating.toFixed(2)}</span> stars
+      <p className="card-stars__text">
+        <span>{rating.toFixed(2)}</span> stars
       </p>
     </div>
   );
-}
+};
 
-function WhiskyCard(props: { whisky: WhiskyItem, fullWidth?: boolean }) {
-  const { id, brand, name, rating } = props.whisky;
+type CProps = {
+  url: string,
+  noLink?: boolean,
+  children: any,
+};
+
+const CardWrapper = ({ url, noLink, children }: CProps) => {
+  return noLink ? <>{children}</> : <Link href={url}><>{children}</></Link>
+};
+
+type WProps = {
+  whisky: WhiskyItem,
+  noLink?: boolean,
+};
+
+const WhiskyCard = ({ whisky, noLink }: WProps) => {
+  const { id, brand, name, rating, type, age, price } = whisky;
   return (
-    <a href={`/whiskies/${id}`}>
+    <CardWrapper url={`/whiskies/${id}`} noLink={noLink}>
       <Image
-        className={styles.cardImg}
+        className="card__img"
         src={`/images/whiskies/${id}.jpg`}
         alt={`${brand} - ${name}`}
         width="400"
         height="400"
       />
-      <div className={styles.cardContent}>
-        <h3 className={styles.cardTitle}>{brand}</h3>
-        <p className={styles.cardSubtitle}>{name}</p>
-        <Stars rating={rating} fullWidth={props.fullWidth} />
-        {props.fullWidth && (
-          <div className={styles.cardMeta}>
-            <p>Type: {props.whisky.type}</p>
-            <p>Age: {props.whisky.age}</p>
-            <p>Price: {props.whisky.price}</p>
-          </div>
-        )}
+      <div className="card__content">
+        <Typography variant="h3">{brand}</Typography>
+        <Typography variant="h4">{name}</Typography>
+        <CardStars rating={rating} />
+        <div className="card__meta">
+          <p>Type: {type}</p>
+          <p>Age: {age}</p>
+          <p>Price: {price}</p>
+        </div>
       </div>
-    </a>
+    </CardWrapper>
   );
-}
-
-function UserCard(props: { user: string }) {
-  return <></>;
-}
-
-type CardProps = {
-  whisky?: WhiskyItem;
-  user?: string;
-  fullWidth?: boolean;
 };
 
-export default function Card({ whisky, user, fullWidth }: CardProps) {
+type UProps = {
+  user: User,
+  noLink?: boolean,
+};
+
+const UserCard = ({ user, noLink }: UProps) => {
+  const { id, name, total } = user;
+  
   return (
-    <div className={`${styles.card} ${fullWidth ? styles.cardLinkFullWidth : ''}`}>
-      {whisky && <WhiskyCard whisky={whisky} fullWidth={fullWidth} />}
-      {user && <UserCard user={user} />}
-    </div>
+    <CardWrapper url={`/users/${id}`} noLink={noLink}>
+      <Image
+        className="card__img"
+        src={`/images/users/${id}.jpg`}
+        alt={name}
+        width="400"
+        height="400"
+      />
+      <div className="card__content">
+        <Typography variant="h3">{name}</Typography>
+        <Typography variant="h4">Rated {total} {total === 1 ? 'whisky' : 'whiskies'}</Typography>
+      </div>
+    </CardWrapper>
+  );
+};
+
+type CardProps = 
+| {
+  type: 'whisky',
+  item: WhiskyItem,
+  noLink?: boolean,
+}
+| {
+  type: 'user',
+  item: User,
+  noLink?: boolean,
+};
+
+export default function Card({ type, item, noLink }: CardProps) {
+  return (
+    <Grid item sx={{ width: '25%' }}>
+      {type === 'whisky' && <WhiskyCard whisky={item} noLink={noLink} />}
+      {type === 'user' && <UserCard user={item} noLink={noLink} />}
+    </Grid>
   );
 }
