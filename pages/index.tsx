@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Layout from '../components/Layout';
-import Card from '../components/Card';
+import Card from '../components/Card/Card';
 import { getWhiskyList, getTopWhiskiesByType } from '../utils/baseUtils';
 import { WhiskyItem } from '../types/baseTypes';
 
@@ -14,7 +14,11 @@ const Section = ({ title, whiskies }: { title: string, whiskies: WhiskyItem[] })
         {title}
       </Typography>
       <Grid container spacing={8}>
-        {whiskies.map((w) => <Card key={w.id} type="whisky" item={w} />)}
+        {whiskies.map((w) => (
+          <Grid key={w.id} item lg={3} md={4} sm={6} xs={12}>
+            <Card type="whisky" item={w} />
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );

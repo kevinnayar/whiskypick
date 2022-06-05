@@ -16,20 +16,21 @@ export function getUserWhiskies(id: string, whiskies: WhiskyItem[]): WhiskyItem[
   const userWhiskies: WhiskyItem[] = [];
 
   for (const whisky of whiskies) {
-    for (const [user, score] of Object.entries(whisky.ratings)) {
-      if (user === id) {
-        if (userWhiskies.length && userWhiskies[userWhiskies.length - 1].ratings[id] < score) {
-          const last = userWhiskies.pop();
-          userWhiskies.push(whisky);
-          if (last) userWhiskies.push(last);
-        } else {
-          userWhiskies.push(whisky);
-        }
-      }
+    const rating = whisky.ratings[id];
+    if (typeof rating === 'number') {
+      const whiskyCopy = {
+        ...whisky,
+        rating,
+      };
+      userWhiskies.push(whiskyCopy);
     }
   }
 
-  return userWhiskies;
+  return userWhiskies.sort((a, b) => {
+    if (a.rating < b.rating) return 1;
+    if (a.rating > b.rating) return -1;
+    return 0;
+  });
 }
 
 export function getUserMap(): UserMap {
@@ -44,7 +45,7 @@ export function getUserMap(): UserMap {
       favorites,
       total: favorites.length,
     }
-    userMap[user.id] = user;
+    userMap[id] = user;
   }
 
   return userMap;

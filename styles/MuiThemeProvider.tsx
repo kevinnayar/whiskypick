@@ -61,11 +61,6 @@ export function MuiThemeProvider({ children }: { children: ReactNode }) {
             border: `2px solid ${colors.grey}`,
             borderRadius: spacing['2.5'],
             textAlign: 'center',
-
-            '&:hover': {
-              boxShadow: '0 0 10px rgba(100, 100, 100, 0.3)',
-              border: `2px solid ${colors.primary}`,
-            }
           },
         },
       },

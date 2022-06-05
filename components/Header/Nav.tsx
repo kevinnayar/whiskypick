@@ -9,11 +9,11 @@ const menu = [
 ];
 
 const Nav = () => {
-  const router = useRouter();
+  const { pathname } = useRouter();
   return (
     <Box sx={{ marginLeft: 'auto' }}>
       {menu.map(({ title, path }) => (
-        <Button key={title} disabled={router.pathname === path}>
+        <Button key={title} disabled={pathname === path}>
           <a href={path}>
             {title}
           </a>
