@@ -1,46 +1,85 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { colors, spacing } from '../styles/theme';
 import { WhiskyItem, User } from '../types/baseTypes';
 
 const CardStars = ({ rating }: { rating: number }) => {
-  const five = [0, 1, 2, 3, 4];
-  const bgWidth = 160;
-  const fgWidth = (rating / 5) * bgWidth;
+  const five = Array.from(Array(5)).map((_, i) => i);
+
+  const width = 160;
+  const height = width / 5;
+  const starContainerWidth = (rating / 5) * width;
+  const starPadding = 4;
+  const starSize = height - starPadding;
+
+  const containerStyles = {
+    width,
+    margin: `${spacing[4]} auto`,
+    paddingTop: `${height}px`,
+    position: 'relative',
+  };
+  const starContainerStyles = {
+    top: 0,
+    width,
+    height,
+    position: 'absolute',
+    overflow: 'hidden',
+  };
+  const starStyles = {
+    width: starSize,
+    height: starSize,
+    fontSize: starSize,
+    padding: starPadding / 2,
+    display: 'inline',
+  };
 
   return (
-    <div className="card-stars">
-      <div className="card-stars__bg" style={{ width: `${bgWidth}px` }}>
-        {five.map((l) => (
-          <i key={l} className={`material-icons card-stars__icon`}>
-            star
-          </i>
-        ))}
-      </div>
-      <div className="card-stars__fg" style={{ width: `${fgWidth}px` }}>
-        {five.map((l) => (
-          <i key={l} className={`material-icons card-stars__icon`}>
-            star
-          </i>
-        ))}
-      </div>
-      <p className="card-stars__text">
-        <span>{rating.toFixed(2)}</span> stars
-      </p>
-    </div>
+    <Tooltip title={`${rating.toFixed(2)} stars`}>
+      <Box sx={containerStyles}>
+        <Box sx={starContainerStyles}>
+          {five.map((l) => (
+            <i key={l} className="material-icons" style={{ ...starStyles, color: `${colors.grey}` }}>
+              star
+            </i>
+          ))}
+        </Box>
+        <Box sx={{ ...starContainerStyles, width: `${starContainerWidth}px`, color: `${colors.primary}` }}>
+          {five.map((l) => (
+            <i key={l} className="material-icons" style={starStyles}>
+              star
+            </i>
+          ))}
+        </Box>
+      </Box>
+    </Tooltip>
   );
 };
 
-type CProps = {
-  url: string,
-  noLink?: boolean,
+type WithKids = {
   children: any,
 };
 
-const CardWrapper = ({ url, noLink, children }: CProps) => {
-  return noLink ? <>{children}</> : <Link href={url}><>{children}</></Link>
+type CProps = WithKids & {
+  url: string,
+  noLink?: boolean,
 };
+
+const CardContainer = ({ url, noLink, children }: CProps) => noLink
+  ? <Box>{children}</Box>
+  : <a href={url}><>{children}</></a>
+;
+
+const CardTextContent = ({ children }: WithKids) => (
+  <Stack sx={{ padding: `${spacing['3']} ${spacing['6']}` }}>
+    {children}
+  </Stack>
+);
+
 
 type WProps = {
   whisky: WhiskyItem,
@@ -48,27 +87,21 @@ type WProps = {
 };
 
 const WhiskyCard = ({ whisky, noLink }: WProps) => {
-  const { id, brand, name, rating, type, age, price } = whisky;
+  const { id, brand, name, rating, /* type, age, price */ } = whisky;
   return (
-    <CardWrapper url={`/whiskies/${id}`} noLink={noLink}>
+    <CardContainer url={`/whiskies/${id}`} noLink={noLink}>
       <Image
-        className="card__img"
         src={`/images/whiskies/${id}.jpg`}
         alt={`${brand} - ${name}`}
         width="400"
         height="400"
       />
-      <div className="card__content">
+      <CardTextContent>
         <Typography variant="h3">{brand}</Typography>
         <Typography variant="h4">{name}</Typography>
         <CardStars rating={rating} />
-        <div className="card__meta">
-          <p>Type: {type}</p>
-          <p>Age: {age}</p>
-          <p>Price: {price}</p>
-        </div>
-      </div>
-    </CardWrapper>
+      </CardTextContent>
+    </CardContainer>
   );
 };
 
@@ -79,21 +112,19 @@ type UProps = {
 
 const UserCard = ({ user, noLink }: UProps) => {
   const { id, name, total } = user;
-  
   return (
-    <CardWrapper url={`/users/${id}`} noLink={noLink}>
+    <CardContainer url={`/users/${id}`} noLink={noLink}>
       <Image
-        className="card__img"
         src={`/images/users/${id}.jpg`}
         alt={name}
         width="400"
         height="400"
       />
-      <div className="card__content">
+      <CardTextContent>
         <Typography variant="h3">{name}</Typography>
-        <Typography variant="h4">Rated {total} {total === 1 ? 'whisky' : 'whiskies'}</Typography>
-      </div>
-    </CardWrapper>
+        <p>Rated {total} {total === 1 ? 'whisky' : 'whiskies'}</p>
+      </CardTextContent>
+    </CardContainer>
   );
 };
 
@@ -109,11 +140,20 @@ type CardProps =
   noLink?: boolean,
 };
 
-export default function Card({ type, item, noLink }: CardProps) {
-  return (
-    <Grid item sx={{ width: '25%' }}>
-      {type === 'whisky' && <WhiskyCard whisky={item} noLink={noLink} />}
-      {type === 'user' && <UserCard user={item} noLink={noLink} />}
-    </Grid>
-  );
-}
+const CustomCard = ({ type, item, noLink }: CardProps) => (
+  <Grid item sx={{ width: '25%' }}>
+    {type === 'whisky' && (
+      <Card raised={false}>
+        <WhiskyCard whisky={item} noLink={noLink} />
+      </Card>
+    )}
+    {type === 'user' && (
+      <Card raised={false}>
+        <UserCard user={item} noLink={noLink} />
+      </Card>
+    )}
+  </Grid>
+);
+
+export default CustomCard;
+

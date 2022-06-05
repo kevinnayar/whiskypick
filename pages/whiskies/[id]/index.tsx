@@ -1,8 +1,7 @@
 import type { NextPage, GetStaticProps, GetStaticPaths } from 'next';
 import Layout from '../../../components/Layout';
-import Section from '../../../components/Section';
-import NotFound from '../../../components/NotFound';
 import Card from '../../../components/Card';
+import NotFound from '../../../components/NotFound';
 import { getWhiskyMap } from '../../../utils/baseUtils';
 import { WhiskyItem } from '../../../types/baseTypes';
 
@@ -46,9 +45,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 export default function WhiskyPage({ whisky }: Props) {
   return (
     <>
-      <Section>
-        {whisky ? <Card type="whisky" item={whisky} noLink /> : <NotFound />}
-      </Section>
+      {whisky ? <Card type="whisky" item={whisky} noLink /> : <NotFound />}
     </>
   );
 }

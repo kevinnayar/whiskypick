@@ -1,5 +1,4 @@
 import type { NextPage, GetStaticProps } from 'next';
-import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -46,13 +45,13 @@ export const getStaticProps: GetStaticProps = () => {
 
 export default function Index({ bourbons, irish, ryes, scotches, singleMalts }: Props) {
   return (
-    <Container maxWidth="xl">
+    <>
       <Section title="Top Bourbons" whiskies={bourbons} />
       <Section title="Top Irish" whiskies={irish} />
       <Section title="Top Ryes" whiskies={ryes} />
       <Section title="Top Scotches" whiskies={scotches} />
       <Section title="Top Single Malts" whiskies={singleMalts} />
-    </Container>
+    </>
   );
 }
 

@@ -1,13 +1,15 @@
 import Head from 'next/head';
-import Header from './Header';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import { spacing } from '../styles/theme';
+import Header from './Header';
 
 type Props = {
   children: any;
   pageTitle?: string;
 };
 
-export default function Layout({ children, pageTitle }: Props) {
+const Layout = ({ children, pageTitle }: Props) => {
   const title = 'WhiskyPick';
   const description =
     'Ratings and details from our whisky tastings in Austin, Texas. We sample all types: Bourbon, Irish, Rye, Scotch, and random other whiskys.';
@@ -41,10 +43,14 @@ export default function Layout({ children, pageTitle }: Props) {
 
       <Box>
         <Header />
-        <Box sx={{ marginTop: '10rem' }}>
-          {children}
+        <Box sx={{ margin: `${spacing['40']} auto` }}>
+          <Container maxWidth="lg">
+            {children}
+          </Container>
         </Box>
       </Box>
     </>
   );
 }
+
+export default Layout;

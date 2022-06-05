@@ -1,6 +1,5 @@
 import type { NextPage, GetStaticProps } from 'next';
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
 import Layout from '../components/Layout';
 import Card from '../components/Card';
 import { getUserList } from '../utils/baseUtils';
@@ -16,11 +15,9 @@ export const getStaticProps: GetStaticProps = () => {
 
 export default function Users({ users }: { users: User[] }) {
   return (
-    <Container maxWidth="xl">
-      <Grid container spacing={8}>
-        {users.map((u) => <Card key={u.id} type="user" item={u} />)}
-      </Grid>
-    </Container>
+    <Grid container spacing={8}>
+      {users.map((u) => <Card key={u.id} type="user" item={u} />)}
+    </Grid>
   );
 }
 

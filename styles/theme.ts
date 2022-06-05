@@ -1,11 +1,11 @@
-const colors = {
+export const colors = {
   primary: '#ffbe00',
-  secondary: '#edae00',
   black: '#121212',
   white: '#FDFDFD',
+  grey: '#EFEFEF',
 }
 
-const fontSize = {
+export const fontSize = {
   xs: '0.75rem',
   sm: '0.875rem',
   md: '1rem',
@@ -22,7 +22,7 @@ const fontSize = {
   '9xl': '8rem',
 }
 
-const spacing = {
+export const spacing = {
   px: '1px',
   0.5: '0.125rem',
   1: '0.25rem',

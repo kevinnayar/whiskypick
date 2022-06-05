@@ -8,13 +8,13 @@ const menu = [
   { title: 'Users', path: '/users' },
 ];
 
-export default function Nav() {
+const Nav = () => {
   const router = useRouter();
   return (
     <Box sx={{ marginLeft: 'auto' }}>
       {menu.map(({ title, path }) => (
-        <Button key={title}>
-          <a href={path} className={router.pathname === path ? 'active' : ''}>
+        <Button key={title} disabled={router.pathname === path}>
+          <a href={path}>
             {title}
           </a>
         </Button>
@@ -22,3 +22,6 @@ export default function Nav() {
     </Box>
   );
 }
+
+export default Nav;
+

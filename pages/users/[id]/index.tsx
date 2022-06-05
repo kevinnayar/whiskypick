@@ -1,7 +1,6 @@
 import type { NextPage, GetStaticProps, GetStaticPaths } from 'next';
-import Layout from '../../../components/Layout';
-import Section from '../../../components/Section';
 import NotFound from '../../../components/NotFound';
+import Layout from '../../../components/Layout';
 import Card from '../../../components/Card';
 import { getUserMap } from '../../../utils/baseUtils';
 import { User } from '../../../types/baseTypes';
@@ -46,9 +45,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 export default function UserPage({ user }: Props) {
   return (
     <>
-      <Section>
-        {user ? <Card type="user" item={user} noLink /> : <NotFound />}
-      </Section>
+      {user ? <Card type="user" item={user} noLink /> : <NotFound />}
     </>
   );
 }
