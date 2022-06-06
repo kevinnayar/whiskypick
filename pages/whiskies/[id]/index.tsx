@@ -1,8 +1,8 @@
 import type { NextPage, GetStaticProps, GetStaticPaths } from 'next';
 import Grid from '@mui/material/Grid';
-import Layout from '../../../components/Layout';
+import Layout from '../../../components/Layout/Layout';
 import Card from '../../../components/Card/Card';
-import NotFound from '../../../components/NotFound';
+import Chart from '../../../components/Chart/Chart';
 import { getWhiskyMap } from '../../../utils/baseUtils';
 import { WhiskyItem } from '../../../types/baseTypes';
 
@@ -39,27 +39,23 @@ export const getStaticPaths: GetStaticPaths = () => {
         params: { id },
       };
     }),
-    fallback: true,
+    fallback: false,
   };
 }
 
 export default function WhiskyPage({ whisky }: Props) {
   return (
     <>
-      {whisky
-        ? (
-          <Grid container spacing={8}>
-            <Grid item lg={4} md={4} sm={4} xs={12}>
-              <Card type="whisky" item={whisky} noLink />
-            </Grid>
-            <Grid item lg={8} md={8} sm={8} xs={12}>
-              <Card type="whisky" item={whisky} noLink />
-            </Grid>
+      {whisky && (
+        <Grid container spacing={8}>
+          <Grid item lg={4} md={4} sm={4} xs={12}>
+            <Card type="whisky" item={whisky} noLink />
           </Grid>
-        ) : (
-          <NotFound />
-        )
-      }
+          <Grid item lg={8} md={8} sm={8} xs={12}>
+            <Chart ratings={whisky.ratings} />
+          </Grid>
+        </Grid>
+      )}
     </>
   );
 }

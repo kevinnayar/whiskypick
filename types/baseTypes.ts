@@ -9,7 +9,7 @@ export type UserMap = {
   [userId: string]: User;
 };
 
-type Ratings = {
+export type Ratings = {
   [userId: string]: number; // rating
 };
 

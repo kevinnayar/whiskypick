@@ -8,8 +8,7 @@ export function getWhiskyMap(): WhiskyMap {
 }
 
 export function getWhiskyList(): WhiskyItem[] {
-  const whiskyList = Object.values(whiskies) as WhiskyItem[];
-  return whiskyList;
+  return [...Object.values(getWhiskyMap())] as WhiskyItem[];
 }
 
 export function getUserWhiskies(id: string, whiskies: WhiskyItem[]): WhiskyItem[] {
@@ -18,11 +17,10 @@ export function getUserWhiskies(id: string, whiskies: WhiskyItem[]): WhiskyItem[
   for (const whisky of whiskies) {
     const rating = whisky.ratings[id];
     if (typeof rating === 'number') {
-      const whiskyCopy = {
+      userWhiskies.push({
         ...whisky,
         rating,
-      };
-      userWhiskies.push(whiskyCopy);
+      });
     }
   }
 
@@ -52,14 +50,7 @@ export function getUserMap(): UserMap {
 }
 
 export function getUserList(): User[] {
-  const userList: User[] = Object.values(getUserMap());
-  return userList;
-}
-
-export function getUserName(id: string, userMap: UserMap): string {
-  const user = userMap[id];
-  if (!user) throw new Error(`No user found for id " ${id}`);
-  return user.name;
+  return [...Object.values(getUserMap())];
 }
 
 export function getWhiskiesSortedByKey(key: NumericKey, dir: Dir, whiskies: WhiskyItem[]): WhiskyItem[] {
@@ -79,7 +70,8 @@ export function getWhiskiesSortedByKey(key: NumericKey, dir: Dir, whiskies: Whis
 
 export function getWhiskiesFilteredByKeys(types: WhiskyType[], whiskies: WhiskyItem[]): WhiskyItem[] {
   const filtered: WhiskyItem[] = [];
-  for (const whisky of whiskies) {
+  const all = [...whiskies];
+  for (const whisky of all) {
     if (types.includes(whisky.type)) {
       filtered.push(whisky);
     }
@@ -95,5 +87,12 @@ export function getTopWhiskiesByType(
   const filtered = getWhiskiesFilteredByKeys([type], whiskies);
   const sorted = getWhiskiesSortedByKey('rating', 'desc', filtered);
   return sorted.slice(0, limit);
+}
+
+export function getUserNameById(id: string): string {
+  const userMap = getUserMap();
+  const user = userMap[id];
+  if (!user) throw new Error(`No user with user id: ${id}`);
+  return user.name;
 }
 

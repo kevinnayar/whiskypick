@@ -1,9 +1,11 @@
+import type { NextPage } from 'next';
+import Layout from '../components/Layout/Layout';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { spacing } from '../styles/theme';
 
-const NotFound = () => {
+export default function FourOhFour() {
   return (
     <Box sx={{ textAlign: 'center' }}>
       <Typography variant="h2">
@@ -21,4 +23,6 @@ const NotFound = () => {
   );
 }
 
-export default NotFound;
+FourOhFour.getLayout = function getLayout(page: NextPage) {
+  return <Layout pageTitle="home">{page}</Layout>;
+};

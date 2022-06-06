@@ -2,7 +2,7 @@ import type { NextPage, GetStaticProps } from 'next';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Layout from '../components/Layout';
+import Layout from '../components/Layout/Layout';
 import Card from '../components/Card/Card';
 import { getWhiskyList, getTopWhiskiesByType } from '../utils/baseUtils';
 import { WhiskyItem } from '../types/baseTypes';

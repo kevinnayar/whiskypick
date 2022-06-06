@@ -1,7 +1,6 @@
 import type { NextPage, GetStaticProps, GetStaticPaths } from 'next';
 import Grid from '@mui/material/Grid';
-import NotFound from '../../../components/NotFound';
-import Layout from '../../../components/Layout';
+import Layout from '../../../components/Layout/Layout';
 import Card from '../../../components/Card/Card';
 import { getUserMap } from '../../../utils/baseUtils';
 import { User } from '../../../types/baseTypes';
@@ -38,7 +37,7 @@ export const getStaticPaths: GetStaticPaths = () => {
         params: { id },
       };
     }),
-    fallback: true,
+    fallback: false,
   };
 }
 
@@ -46,7 +45,7 @@ export default function UserPage({ user }: Props) {
   return (
     <>
       {user
-        ? (
+        && (
           <Grid container spacing={8}>
             <Grid item lg={4} md={4} sm={4} xs={12}>
               <Card type="user" item={user} noLink />
@@ -61,8 +60,6 @@ export default function UserPage({ user }: Props) {
               </Grid>
             </Grid>
           </Grid>
-        ) : (
-          <NotFound />
         )
       }
     </>

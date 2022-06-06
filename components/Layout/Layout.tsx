@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Header from './Header/Header';
-import { spacing } from '../styles/theme';
+import Header from '../Header/Header';
+import { spacing } from '../../styles/theme';
 
 type Props = {
   children: any;

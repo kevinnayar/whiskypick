@@ -1,6 +1,6 @@
 import type { NextPage, GetStaticProps } from 'next';
 import Grid from '@mui/material/Grid';
-import Layout from '../components/Layout';
+import Layout from '../components/Layout/Layout';
 import Card from '../components/Card/Card';
 import { getUserList } from '../utils/baseUtils';
 import { User } from '../types/baseTypes';
